@@ -27,14 +27,12 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
 .drill-price{font-size:2.5rem;color:#ffd700;font-weight:900;margin-bottom:15px}
 .drill-title{font-size:1.5rem;color:#00d4ff;font-weight:700;margin-bottom:15px}
 .drill-desc{font-size:1rem;line-height:1.7;color:rgba(255,255,255,.7)}
-.secret-section{margin-top:80px;padding:50px 40px;background:rgba(0,0,0,.5);border-radius:20px;border:2px solid rgba(138,43,226,.3);max-width:600px;width:100%}
-.secret-title{font-size:1.3rem;color:rgba(255,255,255,.5);margin-bottom:25px;text-align:center}
-.password-box{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
-.password-box input{flex:1;min-width:200px;padding:18px;background:rgba(0,0,0,.8);border:2px solid rgba(138,43,226,.5);border-radius:10px;color:#fff;font-size:1.2rem;text-align:center;font-family:'Orbitron',sans-serif}
+.secret-section{margin-top:80px;padding:30px 40px;background:rgba(0,0,0,.3);border-radius:20px;border:1px solid rgba(138,43,226,.2);max-width:400px;width:100%}
+.password-box{display:flex;gap:15px;align-items:center;justify-content:center}
+.password-box input{flex:1;padding:15px;background:rgba(0,0,0,.8);border:2px solid rgba(138,43,226,.3);border-radius:10px;color:#fff;font-size:1.1rem;text-align:center;font-family:'Orbitron',sans-serif}
 .password-box input:focus{outline:none;border-color:#ff00ff;box-shadow:0 0 20px rgba(255,0,255,.4)}
-.btn-unlock{padding:18px 40px;background:linear-gradient(135deg,#ff00ff,#8a2be2);border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;transition:all .3s;font-family:'Orbitron',sans-serif;font-size:1.1rem}
+.btn-unlock{padding:15px 25px;background:linear-gradient(135deg,#ff00ff,#8a2be2);border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;transition:all .3s;font-family:'Orbitron',sans-serif;font-size:1.2rem}
 .btn-unlock:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(255,0,255,.6)}
-.hint{margin-top:20px;font-size:.9rem;color:rgba(255,255,255,.4);text-align:center}
 .drill-content{max-width:900px;width:100%;background:rgba(0,0,0,.9);padding:50px 40px;border-radius:30px;border:2px solid rgba(138,43,226,.5)}
 .drill-header{text-align:center;margin-bottom:50px}
 .drill-header h2{font-size:clamp(2rem,6vw,3rem);color:#00d4ff;margin-bottom:15px}
@@ -73,7 +71,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
 
 <div class="container">
 
-<!-- エントランス -->
 <section id="entrance" class="entrance active">
   <div class="main-title">0.01</div>
   <div class="tagline">
@@ -112,12 +109,10 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
   </div>
   
   <div class="secret-section">
-    <div class="secret-title">全てを解放する</div>
     <div class="password-box">
-      <input type="text" id="secretCode" placeholder="パスワードを入力">
-      <button class="btn-unlock" onclick="unlockAll()">解放</button>
+      <input type="text" id="secretCode" placeholder="">
+      <button class="btn-unlock" onclick="unlockAll()">→</button>
     </div>
-    <div class="hint">ヒント: 最小の一歩</div>
   </div>
   
   <div class="footer">
@@ -126,7 +121,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
   </div>
 </section>
 
-<!-- ¥100ドリル -->
 <section id="drill-100">
   <div class="drill-content">
     <div class="drill-header">
@@ -151,7 +145,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
   </div>
 </section>
 
-<!-- ¥980ドリル -->
 <section id="drill-980">
   <div class="drill-content">
     <div class="drill-header">
@@ -181,7 +174,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
   </div>
 </section>
 
-<!-- ¥2,980ドリル -->
 <section id="drill-2980">
   <div class="drill-content">
     <div class="drill-header">
@@ -213,7 +205,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
   </div>
 </section>
 
-<!-- ¥29,800ドリル -->
 <section id="drill-29800">
   <div class="drill-content">
     <div class="drill-header">
@@ -265,7 +256,6 @@ const ans980={};
 const ans2980={};
 const ans29800={};
 
-// 星空生成
 function createStars(){
 const s=document.getElementById('stars');
 for(let i=0;i<200;i++){
@@ -278,7 +268,6 @@ s.appendChild(star);
 }
 }
 
-// 初期化
 document.addEventListener('DOMContentLoaded',()=>{
 createStars();
 const params=new URLSearchParams(window.location.search);
@@ -287,7 +276,6 @@ unlockedDrills.add(parseInt(params.get('plan')));
 }
 });
 
-// ドリル選択
 function selectDrill(price){
 if(!unlockedDrills.has(price)&&!unlockedDrills.has(0)){
 window.location.href=`payment.html?plan=${price}`;
@@ -302,7 +290,6 @@ if(price===29800)init29800();
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// エントランスに戻る
 function backToEntrance(){
 document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
 document.getElementById('entrance').classList.add('active');
@@ -310,18 +297,21 @@ window.scrollTo({top:0,behavior:'smooth'});
 return false;
 }
 
-// 裏技コード
 function unlockAll(){
 const code=document.getElementById('secretCode').value;
 if(code==='0.01'){
 unlockedDrills.add(0);
-alert('🎉 全ドリル解放！');
-}else{
-alert('⚠️ パスワードが違います');
+alert('🎉 全ドリル解放！\n\n¥100、¥980、¥2,980、¥29,800\n全てのドリルが使えます！');
 }
 }
 
-// ¥100ドリル初期化
+function copyCode(id){
+const text=document.getElementById(id).textContent;
+navigator.clipboard.writeText(text).then(()=>{
+alert('📋 コピーしました！\n\nAIに貼り付けて、さらに深い分析を受けてください。');
+});
+}
+
 function init100(){
 const qs=[
 {q:'今この瞬間、あなたは何を感じていますか？',opts:['過去や未来を考えている','今に集中している','何も考えていない']},
@@ -377,7 +367,6 @@ document.getElementById('btn-100').style.display='none';
 document.getElementById('result-100').style.display='block';
 }
 
-// ¥980ドリル初期化
 function init980(){
 const qs=[
 {q:'朝起きた時の感覚は？',opts:['疲れている','普通','エネルギーに満ちている']},
@@ -410,17 +399,6 @@ if(Object.keys(ans980).length===10&&bd){
 document.getElementById('btn-980').style.display='block';
 }
 }
-
-document.addEventListener('DOMContentLoaded',()=>{
-const bd=document.getElementById('birthday-980');
-if(bd){
-bd.addEventListener('change',()=>{
-if(Object.keys(ans980).length===10&&bd.value){
-document.getElementById('btn-980').style.display='block';
-}
-});
-}
-});
 
 function showResult980(){
 const birthday=document.getElementById('birthday-980').value;
@@ -462,7 +440,6 @@ document.getElementById('btn-980').style.display='none';
 document.getElementById('result-980').style.display='block';
 }
 
-// ¥2,980ドリル初期化
 function init2980(){
 const qs=[
 {q:'過去の記憶は？',opts:['宝物','参考資料','幻想']},
@@ -485,4 +462,17 @@ const c=document.getElementById('questions-2980');
 c.innerHTML='';
 qs.forEach((q,i)=>{
 const d=document.createElement('div');
-d.classN
+d.className='question';
+d.innerHTML=`<div class="question-title">Q${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="option" onclick="select2980(${i},${j},this)">${o}</div>`).join('')}</div>`;
+c.appendChild(d);
+updateProgress2980();
+});
+}
+
+function select2980(qi,val,el){
+el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+ans2980[qi]=val;
+updateProgress2980();
+if(Object.keys(ans2980).length===15){
+document.getElementById('btn-2980').style.display='
