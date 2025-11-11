@@ -113,7 +113,6 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-// ===== Stripe読み込み待機関数 =====
 function waitForStripe(callback) {
   if (typeof Stripe !== 'undefined') {
     console.log('✅ Stripe loaded successfully');
@@ -124,43 +123,39 @@ function waitForStripe(callback) {
   }
 }
 
-// ===== Stripe公開可能キー =====
 const STRIPE_PUBLISHABLE_KEY = 'pk_test_51SRULXE90hNxeF7bObkIHe2xyOrQ6NZEFhKwxj9UWFyAyCX65gpKDiXD1iMM3VgPDAWqfOuAJgphapS2Ss9vjwDu00iSwc7QTr';
 
-// ===== プラン情報 =====
 const plans = {
   100: {
     name: '基本ドリル',
     price: '¥100',
     amount: 100,
-    desc: 'ランダムに実験を体験'
+    desc: '3つの実験を体験'
   },
   980: {
     name: '座標ドリル',
     price: '¥980',
     amount: 980,
-    desc: '誕生日から座標を計算'
+    desc: '誕生日+10問診断'
   },
   2980: {
     name: 'プレミアムドリル',
     price: '¥2,980',
     amount: 2980,
-    desc: '15問診断・複数タイプ判定'
+    desc: '15問深層診断'
   },
   29800: {
     name: 'アルティメットドリル',
     price: '¥29,800',
     amount: 29800,
-    desc: '50問超詳細診断・究極のAI説明書'
+    desc: '50問超詳細診断'
   }
 };
 
-// ===== URLパラメータからプラン取得 =====
 const urlParams = new URLSearchParams(window.location.search);
 const planType = parseInt(urlParams.get('plan')) || 980;
 const currentPlan = plans[planType];
 
-// ===== プラン情報を表示 =====
 if (currentPlan) {
   document.getElementById('planName').textContent = currentPlan.name;
   document.getElementById('planPrice').textContent = currentPlan.price;
@@ -170,7 +165,6 @@ if (currentPlan) {
   document.getElementById('payment-form').style.display = 'none';
 }
 
-// ===== 星空生成 =====
 function createStars() {
   const starsContainer = document.getElementById('stars');
   const fragment = document.createDocumentFragment();
@@ -187,7 +181,6 @@ function createStars() {
   starsContainer.appendChild(fragment);
 }
 
-// ===== Stripe初期化 =====
 let stripe, elements, cardElement;
 
 function initializeStripe() {
@@ -237,7 +230,6 @@ function initializeStripe() {
   }
 }
 
-// ===== フォーム送信 =====
 const form = document.getElementById('payment-form');
 
 form.addEventListener('submit', async (event) => {
@@ -351,11 +343,9 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, m => map[m]);
 }
 
-// ===== 初期化 =====
 document.addEventListener('DOMContentLoaded', () => {
   createStars();
   
-  // Stripe読み込み待機してから初期化
   waitForStripe(() => {
     initializeStripe();
     
