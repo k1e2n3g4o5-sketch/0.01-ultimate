@@ -195,7 +195,6 @@ section.active{display:flex;flex-direction:column;align-items:center;justify-con
     0.01 - Beyond Time DNA検査キット<br>
     Created by 荒井健吾
   </div>
-
 </section>
 
 <section id="drill-100">
@@ -358,7 +357,7 @@ unlockedDrills.add(parseInt(params.get('plan')));
 
 function selectDrill(price){
 if(!unlockedDrills.has(price)&&!unlockedDrills.has(0)){
-window.location.href='./payment.html?plan='+price;
+window.location.href='/payment.html?plan='+price;
 
 return;
 
@@ -601,4 +600,4 @@ const c=document.getElementById('questions-2980');
 c.innerHTML='';
 
 qs.forEach((q,i)=>{
-co
+con
