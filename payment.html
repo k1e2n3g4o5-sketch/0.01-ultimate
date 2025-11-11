@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Beyond Time - お支払い</title>
+<title>Beyond Time DNA検査キット - お支払い</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -57,12 +57,12 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 <div class="stars" id="stars"></div>
 
 <div class="container">
-  <div class="title">💳 お支払い</div>
+  <div class="title">🧬 お支払い</div>
 
   <div class="plan-info" id="planInfo">
     <div class="plan-name" id="planName">読み込み中...</div>
     <div class="plan-price" id="planPrice">¥---</div>
-    <div class="plan-desc" id="planDesc">プラン情報を取得しています...</div>
+    <div class="plan-desc" id="planDesc">検査情報を取得しています...</div>
   </div>
 
   <div class="success-message" id="successMessage">
@@ -96,7 +96,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
     </div>
 
     <button type="submit" class="btn-pay" id="submit-button">
-      ⚡ 支払う
+      🧬 DNA検査を購入
     </button>
 
     <div class="loading" id="loading">
@@ -127,28 +127,28 @@ const STRIPE_PUBLISHABLE_KEY = 'pk_test_51SRULXE90hNxeF7bObkIHe2xyOrQ6NZEFhKwxj9
 
 const plans = {
   100: {
-    name: '基本ドリル',
+    name: '基本DNA検査',
     price: '¥100',
     amount: 100,
-    desc: '3つの実験を体験'
+    desc: '3問で簡易分析'
   },
   980: {
-    name: '座標ドリル',
+    name: '座標DNA検査',
     price: '¥980',
     amount: 980,
-    desc: '誕生日+10問診断'
+    desc: '誕生日+10問で基本遺伝子型'
   },
   2980: {
-    name: 'プレミアムドリル',
+    name: 'プレミアムDNA検査',
     price: '¥2,980',
     amount: 2980,
-    desc: '15問深層診断'
+    desc: '15問で哺乳類・両生類比率測定'
   },
   29800: {
-    name: 'アルティメットドリル',
+    name: '完全DNA検査',
     price: '¥29,800',
     amount: 29800,
-    desc: '50問超詳細診断'
+    desc: '50問で完全解析・動物特定'
   }
 };
 
@@ -291,7 +291,7 @@ form.addEventListener('submit', async (event) => {
     console.error('❌ Payment error:', error);
     showError(error.message || '決済処理中にエラーが発生しました。');
     submitButton.disabled = false;
-    submitButton.textContent = '⚡ 支払う';
+    submitButton.textContent = '🧬 DNA検査を購入';
   } finally {
     loading.classList.remove('active');
   }
@@ -311,10 +311,10 @@ function showSuccess(name, email) {
   
   document.getElementById('successText').innerHTML = `
     <strong>${escapeHtml(name)}</strong> 様<br><br>
-    決済が完了しました！<br><br>
+    DNA検査キットの購入が完了しました！<br><br>
     <strong>${escapeHtml(currentPlan.name)}</strong><br>
     ${escapeHtml(currentPlan.price)}<br><br>
-    <strong style="color:#ffd700">3秒後に診断ページへ移動します...</strong>
+    <strong style="color:#ffd700">3秒後に遺伝子解析ページへ移動します...</strong>
   `;
   
   setTimeout(() => {
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   
-  console.log('🔥 Payment page initialized');
+  console.log('🔥 DNA検査キット購入ページ');
   console.log('📦 Plan:', planType);
 });
 </script>
