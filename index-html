@@ -276,11 +276,11 @@ unlockedDrills.add(parseInt(params.get('plan')));
 
 function selectDrill(price){
 if(!unlockedDrills.has(price)&&!unlockedDrills.has(0)){
-window.location.href=`payment.html?plan=${price}`;
+window.location.href='./payment.html?plan='+price;
 return;
 }
 document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById(`drill-${price}`).classList.add('active');
+document.getElementById('drill-'+price).classList.add('active');
 if(price===100)init100();
 if(price===980)init980();
 if(price===2980)init2980();
@@ -321,7 +321,7 @@ c.innerHTML='';
 qs.forEach((q,i)=>{
 const d=document.createElement('div');
 d.className='question';
-d.innerHTML=`<div class="question-title">Q${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="option" onclick="select100(${i},${j},this)">${o}</div>`).join('')}</div>`;
+d.innerHTML='<div class="question-title">Q'+(i+1)+'. '+q.q+'</div><div class="options">'+q.opts.map((o,j)=>'<div class="option" onclick="select100('+i+','+j+',this)">'+o+'</div>').join('')+'</div>';
 c.appendChild(d);
 });
 }
@@ -339,46 +339,13 @@ function showResult100(){
 const score=Object.values(ans100).reduce((a,b)=>a+b,0);
 const mammal=Math.floor(100-(score/6*100));
 const amphibian=100-mammal;
-const code=`DNA-BASIC-${Math.floor(Math.random()*9000+1000)}`;
-
+const code='DNA-BASIC-'+Math.floor(Math.random()*9000+1000);
 let type='';
 if(mammal>70){type='🦍 哺乳類型（固定・維持）';}
 else if(amphibian>70){type='🐸 両生類型（適応・解放）';}
 else{type='⚖️ ハイブリッド型（両方使える）';}
-
-document.getElementById('analysis-100').innerHTML=`
-<div class="dna-box">
-<div class="dna-title">🧬 基本遺伝子型</div>
-<div class="gene-row">
-<div class="gene-label">🦍 哺乳類型</div>
-<div class="gene-value">${mammal}%</div>
-</div>
-<div class="gene-row">
-<div class="gene-label">🐸 両生類型</div>
-<div class="gene-value">${amphibian}%</div>
-</div>
-<div class="gene-row">
-<div class="gene-label">判定</div>
-<div class="gene-value">${type}</div>
-</div>
-</div>
-`;
-
-document.getElementById('code-100').textContent=`
-基本DNA検査結果
-
-遺伝子コード: ${code}
-
-🦍 哺乳類型: ${mammal}%
-🐸 両生類型: ${amphibian}%
-
-判定: ${type}
-
-このコードをAIに貼り付けると、
-さらに深い分析が得られます。
-
-Beyond Time DNA検査キット
-`;
+document.getElementById('analysis-100').innerHTML='<div class="dna-box"><div class="dna-title">🧬 基本遺伝子型</div><div class="gene-row"><div class="gene-label">🦍 哺乳類型</div><div class="gene-value">'+mammal+'%</div></div><div class="gene-row"><div class="gene-label">🐸 両生類型</div><div class="gene-value">'+amphibian+'%</div></div><div class="gene-row"><div class="gene-label">判定</div><div class="gene-value">'+type+'</div></div></div>';
+document.getElementById('code-100').textContent='基本DNA検査結果\n\n遺伝子コード: '+code+'\n\n🦍 哺乳類型: '+mammal+'%\n🐸 両生類型: '+amphibian+'%\n\n判定: '+type+'\n\nこのコードをAIに貼り付けると、\nさらに深い分析が得られます。\n\nBeyond Time DNA検査キット';
 document.getElementById('questions-100').style.display='none';
 document.getElementById('btn-100').style.display='none';
 document.getElementById('result-100').style.display='block';
@@ -402,7 +369,7 @@ c.innerHTML='';
 qs.forEach((q,i)=>{
 const d=document.createElement('div');
 d.className='question';
-d.innerHTML=`<div class="question-title">Q${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="option" onclick="select980(${i},${j},this)">${o}</div>`).join('')}</div>`;
+d.innerHTML='<div class="question-title">Q'+(i+1)+'. '+q.q+'</div><div class="options">'+q.opts.map((o,j)=>'<div class="option" onclick="select980('+i+','+j+',this)">'+o+'</div>').join('')+'</div>';
 c.appendChild(d);
 });
 }
@@ -419,10 +386,7 @@ document.getElementById('btn-980').style.display='block';
 
 function showResult980(){
 const birthday=document.getElementById('birthday-980').value;
-if(!birthday){
-alert('⚠️ 生年月日を入力してください');
-return;
-}
+if(!birthday){alert('⚠️ 生年月日を入力してください');return;}
 const date=new Date(birthday);
 const score=Object.values(ans980).reduce((a,b)=>a+b,0);
 const mammal=Math.floor(100-(score/20*100));
@@ -430,40 +394,9 @@ const amphibian=100-mammal;
 const x=(date.getFullYear()%360);
 const y=(date.getMonth()*30+date.getDate())%180;
 const z=((date.getFullYear()+date.getMonth()+date.getDate()+score)%100);
-const code=`DNA-COORD-${x}-${y}-${z}`;
-
-document.getElementById('analysis-980').innerHTML=`
-<div class="dna-box">
-<div class="dna-title">🧬 遺伝子型 + 時空座標</div>
-<div class="gene-row">
-<div class="gene-label">🦍 哺乳類型</div>
-<div class="gene-value">${mammal}%</div>
-</div>
-<div class="gene-row">
-<div class="gene-label">🐸 両生類型</div>
-<div class="gene-value">${amphibian}%</div>
-</div>
-<div class="gene-row">
-<div class="gene-label">時空座標</div>
-<div class="gene-value">(${x}, ${y}, ${z})</div>
-</div>
-</div>
-<p style="margin-top:20px;line-height:1.8">
-過去${Math.floor((new Date()-date)/(1000*60*60*24))}日間の選択が、この遺伝子型と座標を作り出しました。
-</p>
-`;
-
-document.getElementById('code-980').textContent=`
-座標DNA検査結果
-
-遺伝子コード: ${code}
-
-🦍 哺乳類型: ${mammal}%
-🐸 両生類型: ${amphibian}%
-時空座標: (${x}, ${y}, ${z})
-
-Beyond Time DNA検査キット
-`;
+const code='DNA-COORD-'+x+'-'+y+'-'+z;
+document.getElementById('analysis-980').innerHTML='<div class="dna-box"><div class="dna-title">🧬 遺伝子型 + 時空座標</div><div class="gene-row"><div class="gene-label">🦍 哺乳類型</div><div class="gene-value">'+mammal+'%</div></div><div class="gene-row"><div class="gene-label">🐸 両生類型</div><div class="gene-value">'+amphibian+'%</div></div><div class="gene-row"><div class="gene-label">時空座標</div><div class="gene-value">('+x+', '+y+', '+z+')</div></div></div><p style="margin-top:20px;line-height:1.8">過去'+Math.floor((new Date()-date)/(1000*60*60*24))+'日間の選択が、この遺伝子型と座標を作り出しました。</p>';
+document.getElementById('code-980').textContent='座標DNA検査結果\n\n遺伝子コード: '+code+'\n\n🦍 哺乳類型: '+mammal+'%\n🐸 両生類型: '+amphibian+'%\n時空座標: ('+x+', '+y+', '+z+')\n\nBeyond Time DNA検査キット';
 document.getElementById('questions-980').style.display='none';
 document.getElementById('btn-980').style.display='none';
 document.getElementById('result-980').style.display='block';
@@ -492,4 +425,4 @@ c.innerHTML='';
 qs.forEach((q,i)=>{
 const d=document.createElement('div');
 d.className='question';
-d.innerHTML=`<div class="question-title">Q${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="opti
+d.innerHTML='<div class="question-title">Q'+(i+1)+'. '+q.q+'</div><div class="options">'+q.opts.map((o,j)=>'<div cla
