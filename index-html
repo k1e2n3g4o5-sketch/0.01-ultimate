@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0.01 - Beyond Time System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Orbitron','Hiragino Sans',sans-serif;background:#000;color:#fff;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 50% 50%,#0e0e1a 0%,#000 100%);z-index:-2}
+.stars{position:fixed;width:100%;height:100%;z-index:-1;pointer-events:none}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:1}}
+.container{max-width:1200px;margin:0 auto;padding:40px 20px}
+section{display:none;min-height:100vh;padding:60px 20px;animation:fadeIn .5s}
+section.active{display:flex;flex-direction:column;align-items:center;justify-content:center}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.entrance{text-align:center}
+.main-title{font-size:clamp(4rem,15vw,8rem);font-weight:900;color:#00d4ff;margin-bottom:20px;letter-spacing:.05em;animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 40px rgba(0,212,255,.8),0 0 80px rgba(0,212,255,.5)}50%{text-shadow:0 0 60px rgba(0,212,255,1),0 0 120px rgba(0,212,255,.8)}}
+.tagline{font-size:clamp(1rem,3vw,1.4rem);color:rgba(255,255,255,.8);margin-bottom:60px;line-height:1.8}
+.drills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;margin:60px 0;width:100%;max-width:1000px}
+.drill-card{background:linear-gradient(135deg,rgba(138,43,226,.2),rgba(255,0,255,.15));padding:40px 30px;border-radius:20px;border:2px solid rgba(138,43,226,.5);cursor:pointer;transition:all .3s;text-align:center}
+.drill-card:hover{transform:translateY(-5px);border-color:#ff00ff;box-shadow:0 10px 40px rgba(255,0,255,.5)}
+.drill-icon{font-size:4rem;margin-bottom:20px}
+.drill-price{font-size:2.5rem;color:#ffd700;font-weight:900;margin-bottom:15px}
+.drill-title{font-size:1.5rem;color:#00d4ff;font-weight:700;margin-bottom:15px}
+.drill-desc{font-size:1rem;line-height:1.7;color:rgba(255,255,255,.7)}
+.secret-section{margin-top:80px;padding:50px 40px;background:rgba(0,0,0,.5);border-radius:20px;border:2px solid rgba(138,43,226,.3);max-width:600px;width:100%}
+.secret-title{font-size:1.3rem;color:rgba(255,255,255,.5);margin-bottom:25px;text-align:center}
+.password-box{display:flex;gap:15px;flex-wrap:wrap;justify-content:center}
+.password-box input{flex:1;min-width:200px;padding:18px;background:rgba(0,0,0,.8);border:2px solid rgba(138,43,226,.5);border-radius:10px;color:#fff;font-size:1.2rem;text-align:center;font-family:'Orbitron',sans-serif}
+.password-box input:focus{outline:none;border-color:#ff00ff;box-shadow:0 0 20px rgba(255,0,255,.4)}
+.btn-unlock{padding:18px 40px;background:linear-gradient(135deg,#ff00ff,#8a2be2);border:none;border-radius:10px;color:#fff;font-weight:900;cursor:pointer;transition:all .3s;font-family:'Orbitron',sans-serif;font-size:1.1rem}
+.btn-unlock:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(255,0,255,.6)}
+.hint{margin-top:20px;font-size:.9rem;color:rgba(255,255,255,.4);text-align:center}
+.drill-content{max-width:900px;width:100%;background:rgba(0,0,0,.9);padding:50px 40px;border-radius:30px;border:2px solid rgba(138,43,226,.5)}
+.drill-header{text-align:center;margin-bottom:50px}
+.drill-header h2{font-size:clamp(2rem,6vw,3rem);color:#00d4ff;margin-bottom:15px}
+.drill-header p{font-size:clamp(1rem,3vw,1.3rem);color:rgba(255,255,255,.8)}
+.progress{background:rgba(138,43,226,.2);padding:20px;border-radius:15px;margin:20px 0}
+.progress-text{text-align:center;color:#8a2be2;font-weight:bold;margin-bottom:10px}
+.progress-bar{background:rgba(138,43,226,.3);height:10px;border-radius:10px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,#8a2be2,#00d4ff);height:100%;width:0;transition:width .3s;border-radius:10px}
+.question{background:rgba(0,0,0,.95);padding:30px;border-radius:15px;margin:20px 0;border:2px solid rgba(138,43,226,.5)}
+.question-title{font-size:1.3rem;margin-bottom:20px;color:#00d4ff;font-weight:700}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{background:rgba(138,43,226,.2);border:2px solid rgba(138,43,226,.4);padding:18px;border-radius:12px;cursor:pointer;transition:all .3s;color:#fff;font-size:1rem}
+.option:hover{background:rgba(138,43,226,.4);transform:translateX(5px)}
+.option.selected{background:rgba(0,212,255,.3);border-color:#00d4ff;box-shadow:0 0 20px rgba(0,212,255,.5)}
+.input-group{margin:20px 0}
+.input-label{display:block;margin-bottom:10px;color:#00d4ff;font-size:1.1rem;font-weight:700}
+.input-field{width:100%;padding:15px;background:rgba(0,0,0,.5);border:2px solid rgba(138,43,226,.5);border-radius:10px;color:#fff;font-size:1.1rem;font-family:'Orbitron',sans-serif}
+.input-field:focus{outline:none;border-color:#00d4ff;box-shadow:0 0 20px rgba(0,212,255,.5)}
+.btn-primary{padding:20px 50px;background:linear-gradient(135deg,#00d4ff,#8a2be2);border:none;border-radius:15px;color:#000;font-weight:900;cursor:pointer;font-size:1.3rem;transition:all .3s;font-family:'Orbitron',sans-serif;width:100%;max-width:400px;margin:30px auto;display:block}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(138,43,226,.7)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.result-box{background:rgba(0,0,0,.95);padding:40px;border-radius:20px;margin:30px 0;border:3px solid rgba(0,255,0,.5);text-align:center}
+.result-title{font-size:2rem;color:#00ff00;margin-bottom:20px;font-weight:900}
+.result-text{font-size:1.1rem;line-height:1.8;color:rgba(255,255,255,.9);text-align:left}
+.code-box{background:#000;padding:25px;border-radius:10px;font-family:monospace;font-size:.9rem;color:#00ff00;line-height:1.8;white-space:pre-wrap;margin:20px 0;border:2px solid rgba(0,255,0,.3);text-align:left;max-height:400px;overflow-y:auto;cursor:pointer}
+.code-box:hover{box-shadow:0 0 20px rgba(0,255,0,.5)}
+.btn-copy{background:linear-gradient(135deg,#00ff00,#00d4ff);color:#000;padding:15px 30px;border:none;border-radius:10px;font-weight:900;cursor:pointer;width:100%;margin-top:10px}
+.back-btn{display:inline-block;margin-top:40px;padding:15px 30px;background:rgba(138,43,226,.3);border:2px solid rgba(138,43,226,.5);border-radius:10px;color:#fff;text-decoration:none;font-size:1rem;transition:all .3s}
+.back-btn:hover{background:rgba(138,43,226,.5);transform:translateX(-5px)}
+.footer{margin-top:60px;padding-top:30px;border-top:1px solid rgba(255,255,255,.1);text-align:center;color:rgba(255,255,255,.4);font-size:.9rem}
+@media(max-width:768px){.drills-grid{grid-template-columns:1fr}.drill-content{padding:30px 20px}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+<!-- エントランス -->
+<section id="entrance" class="entrance active">
+  <div class="main-title">0.01</div>
+  <div class="tagline">
+    最小の一歩が、全てを変える<br>
+    The smallest step changes everything
+  </div>
+  
+  <div class="drills-grid">
+    <div class="drill-card" onclick="selectDrill(100)">
+      <div class="drill-icon">🌊</div>
+      <div class="drill-price">¥100</div>
+      <div class="drill-title">基本ドリル</div>
+      <div class="drill-desc">3つの実験を体験<br>時間の本質に触れる</div>
+    </div>
+    
+    <div class="drill-card" onclick="selectDrill(980)">
+      <div class="drill-icon">🔥</div>
+      <div class="drill-price">¥980</div>
+      <div class="drill-title">座標ドリル</div>
+      <div class="drill-desc">誕生日+10問診断<br>あなたの時空座標を特定</div>
+    </div>
+    
+    <div class="drill-card" onclick="selectDrill(2980)">
+      <div class="drill-icon">💎</div>
+      <div class="drill-price">¥2,980</div>
+      <div class="drill-title">プレミアムドリル</div>
+      <div class="drill-desc">15問深層診断<br>パラレルワールド表示</div>
+    </div>
+    
+    <div class="drill-card" onclick="selectDrill(29800)">
+      <div class="drill-icon">⚡</div>
+      <div class="drill-price">¥29,800</div>
+      <div class="drill-title">アルティメットドリル</div>
+      <div class="drill-desc">50問超詳細診断<br>時間軸再構築システム</div>
+    </div>
+  </div>
+  
+  <div class="secret-section">
+    <div class="secret-title">全てを解放する</div>
+    <div class="password-box">
+      <input type="text" id="secretCode" placeholder="パスワードを入力">
+      <button class="btn-unlock" onclick="unlockAll()">解放</button>
+    </div>
+    <div class="hint">ヒント: 最小の一歩</div>
+  </div>
+  
+  <div class="footer">
+    0.01 - Beyond Time System<br>
+    Created by 荒井健吾
+  </div>
+</section>
+
+<!-- ¥100ドリル -->
+<section id="drill-100">
+  <div class="drill-content">
+    <div class="drill-header">
+      <h2>🌊 基本ドリル</h2>
+      <p>3つの実験で時間の本質に触れる</p>
+    </div>
+    
+    <div id="questions-100"></div>
+    
+    <button class="btn-primary" id="btn-100" style="display:none" onclick="showResult100()">結果を見る</button>
+    
+    <div id="result-100" style="display:none">
+      <div class="result-box">
+        <div class="result-title">✨ 実験完了</div>
+        <div class="result-text" id="analysis-100"></div>
+        <div class="code-box" id="code-100"></div>
+        <button class="btn-copy" onclick="copyCode('code-100')">📋 コピー</button>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" onclick="backToEntrance()">← エントランスに戻る</a>
+  </div>
+</section>
+
+<!-- ¥980ドリル -->
+<section id="drill-980">
+  <div class="drill-content">
+    <div class="drill-header">
+      <h2>🔥 座標ドリル</h2>
+      <p>誕生日+10問であなたの時空座標を特定</p>
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label">生年月日を入力</label>
+      <input type="date" class="input-field" id="birthday-980">
+    </div>
+    
+    <div id="questions-980"></div>
+    
+    <button class="btn-primary" id="btn-980" style="display:none" onclick="showResult980()">座標を計算</button>
+    
+    <div id="result-980" style="display:none">
+      <div class="result-box">
+        <div class="result-title">📍 座標特定完了</div>
+        <div class="result-text" id="analysis-980"></div>
+        <div class="code-box" id="code-980"></div>
+        <button class="btn-copy" onclick="copyCode('code-980')">📋 コピー</button>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" onclick="backToEntrance()">← エントランスに戻る</a>
+  </div>
+</section>
+
+<!-- ¥2,980ドリル -->
+<section id="drill-2980">
+  <div class="drill-content">
+    <div class="drill-header">
+      <h2>💎 プレミアムドリル</h2>
+      <p>15問の深層診断</p>
+    </div>
+    
+    <div class="progress">
+      <div class="progress-text" id="progress-2980">質問 0/15</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill-2980"></div>
+      </div>
+    </div>
+    
+    <div id="questions-2980"></div>
+    
+    <button class="btn-primary" id="btn-2980" style="display:none" onclick="showResult2980()">✨ 結果を見る ✨</button>
+    
+    <div id="result-2980" style="display:none">
+      <div class="result-box">
+        <div class="result-title">🌌 診断完了</div>
+        <div class="result-text" id="analysis-2980"></div>
+        <div class="code-box" id="code-2980"></div>
+        <button class="btn-copy" onclick="copyCode('code-2980')">📋 コピー</button>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" onclick="backToEntrance()">← エントランスに戻る</a>
+  </div>
+</section>
+
+<!-- ¥29,800ドリル -->
+<section id="drill-29800">
+  <div class="drill-content">
+    <div class="drill-header">
+      <h2>⚡ アルティメットドリル</h2>
+      <p>50問の超詳細診断 - 時間軸再構築</p>
+    </div>
+    
+    <div class="progress">
+      <div class="progress-text" id="progress-29800">質問 0/50</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill-29800"></div>
+      </div>
+    </div>
+    
+    <div id="questions-29800"></div>
+    
+    <button class="btn-primary" id="btn-29800" style="display:none" onclick="showResult29800()">⚡ 時間軸を再構築 ⚡</button>
+    
+    <div id="result-29800" style="display:none">
+      <div class="result-box">
+        <div class="result-title">⚡ 再構築完了</div>
+        <div class="result-text" id="analysis-29800"></div>
+        <div class="code-box" id="code-29800"></div>
+        <button class="btn-copy" onclick="copyCode('code-29800')">📋 コピー</button>
+      </div>
+      
+      <div style="background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,107,0,.2));padding:45px 30px;border-radius:20px;margin:35px 0;border:3px solid rgba(255,215,0,.6);text-align:center">
+        <div style="font-size:2.5rem;color:#ffd700;font-weight:900;margin-bottom:18px">🔥 永遠の今を起動</div>
+        <div style="font-size:1.1rem;line-height:1.9;margin-bottom:25px;color:rgba(255,255,255,.9)">
+          このボタンを押すと、時間軸がリセットされ<br>
+          あなたは「永遠の今」に回帰します
+        </div>
+        <button class="btn-primary" style="background:linear-gradient(135deg,#ffd700,#ff6b00,#ff00ff)" onclick="activateEternal()">
+          🌟 起動する 🌟
+        </button>
+      </div>
+    </div>
+    
+    <a href="#" class="back-btn" onclick="backToEntrance()">← エントランスに戻る</a>
+  </div>
+</section>
+
+</div>
+
+<script>
+let unlockedDrills=new Set();
+const ans100={};
+const ans980={};
+const ans2980={};
+const ans29800={};
+
+// 星空生成
+function createStars(){
+const s=document.getElementById('stars');
+for(let i=0;i<200;i++){
+const star=document.createElement('div');
+star.className='star';
+star.style.left=Math.random()*100+'%';
+star.style.top=Math.random()*100+'%';
+star.style.animationDelay=Math.random()*3+'s';
+s.appendChild(star);
+}
+}
+
+// 初期化
+document.addEventListener('DOMContentLoaded',()=>{
+createStars();
+const params=new URLSearchParams(window.location.search);
+if(params.get('paid')==='true'){
+unlockedDrills.add(parseInt(params.get('plan')));
+}
+});
+
+// ドリル選択
+function selectDrill(price){
+if(!unlockedDrills.has(price)&&!unlockedDrills.has(0)){
+window.location.href=`payment.html?plan=${price}`;
+return;
+}
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.getElementById(`drill-${price}`).classList.add('active');
+if(price===100)init100();
+if(price===980)init980();
+if(price===2980)init2980();
+if(price===29800)init29800();
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// エントランスに戻る
+function backToEntrance(){
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.getElementById('entrance').classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+return false;
+}
+
+// 裏技コード
+function unlockAll(){
+const code=document.getElementById('secretCode').value;
+if(code==='0.01'){
+unlockedDrills.add(0);
+alert('🎉 全ドリル解放！');
+}else{
+alert('⚠️ パスワードが違います');
+}
+}
+
+// ¥100ドリル初期化
+function init100(){
+const qs=[
+{q:'今この瞬間、あなたは何を感じていますか？',opts:['過去や未来を考えている','今に集中している','何も考えていない']},
+{q:'呼吸に意識を向けてください。どう感じますか？',opts:['難しい','少しできる','自然にできる']},
+{q:'時間は存在すると思いますか？',opts:['確実に存在する','概念的なもの','幻想だ']}
+];
+const c=document.getElementById('questions-100');
+c.innerHTML='';
+qs.forEach((q,i)=>{
+const d=document.createElement('div');
+d.className='question';
+d.innerHTML=`<div class="question-title">実験${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="option" onclick="select100(${i},${j},this)">${o}</div>`).join('')}</div>`;
+c.appendChild(d);
+});
+}
+
+function select100(qi,val,el){
+el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+ans100[qi]=val;
+if(Object.keys(ans100).length===3){
+document.getElementById('btn-100').style.display='block';
+}
+}
+
+function showResult100(){
+const score=Object.values(ans100).reduce((a,b)=>a+b,0);
+const code=`BASIC-${Math.floor(Math.random()*9000+1000)}`;
+let analysis='';
+if(score<3){
+analysis='<strong>タイプ:</strong> 時間束縛型<br><br>過去と未来に意識が向いています。「今」を感じる練習をすることで、人生が大きく変わります。<br><br><strong>推奨:</strong> 1日5分の瞑想から始めましょう。';
+}else if(score<5){
+analysis='<strong>タイプ:</strong> 時間調和型<br><br>バランスが取れています。さらに「今」への意識を深めることで、新しい扉が開きます。<br><br><strong>推奨:</strong> マインドフルネスの実践を続けましょう。';
+}else{
+analysis='<strong>タイプ:</strong> 時間超越型<br><br>稀有な能力を持っています。「今」に完全に存在できる状態です。<br><br><strong>推奨:</strong> この感覚を深め、周囲と分かち合いましょう。';
+}
+document.getElementById('analysis-100').innerHTML=analysis;
+document.getElementById('code-100').textContent=`
+基本ドリル診断結果
+
+存在コード: ${code}
+スコア: ${score}/6
+
+${analysis.replace(/<[^>]*>/g,'')}
+
+このコードをAIに貼り付けると、
+さらに深いアドバイスが得られます。
+
+Beyond Time - Basic Drill
+`;
+document.getElementById('questions-100').style.display='none';
+document.getElementById('btn-100').style.display='none';
+document.getElementById('result-100').style.display='block';
+}
+
+// ¥980ドリル初期化
+function init980(){
+const qs=[
+{q:'朝起きた時の感覚は？',opts:['疲れている','普通','エネルギーに満ちている']},
+{q:'1日の時間の流れをどう感じますか？',opts:['速すぎる','ちょうどいい','ゆっくり']},
+{q:'予定通りに物事が進まない時は？',opts:['イライラする','柔軟に対応','気にしない']},
+{q:'締め切りに対する態度は？',opts:['常にプレッシャー','適度な緊張感','特に感じない']},
+{q:'過去の選択を後悔することは？',opts:['頻繁にある','時々ある','ほとんどない']},
+{q:'未来への不安は？',opts:['常にある','時々ある','ほとんどない']},
+{q:'「今」への集中度は？',opts:['低い','中程度','高い']},
+{q:'時間管理の得意度は？',opts:['苦手','普通','得意']},
+{q:'待ち時間をどう過ごしますか？',opts:['イライラする','スマホを見る','何もしない']},
+{q:'「永遠」という概念をどう思いますか？',opts:['理解できない','興味深い','実感できる']}
+];
+const c=document.getElementById('questions-980');
+c.innerHTML='';
+qs.forEach((q,i)=>{
+const d=document.createElement('div');
+d.className='question';
+d.innerHTML=`<div class="question-title">Q${i+1}. ${q.q}</div><div class="options">${q.opts.map((o,j)=>`<div class="option" onclick="select980(${i},${j},this)">${o}</div>`).join('')}</div>`;
+c.appendChild(d);
+});
+}
+
+function select980(qi,val,el){
+el.parentElement.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+ans980[qi]=val;
+const bd=document.getElementById('birthday-980').value;
+if(Object.keys(ans980).length===10&&bd){
+document.getElementById('btn-980').style.display='block';
+}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+const bd=document.getElementById('birthday-980');
+if(bd){
+bd.addEventListener('change',()=>{
+if(Object.keys(ans980).length===10&&bd.value){
+document.getElementById('btn-980').style.display='block';
+}
+});
+}
+});
+
+function showResult980(){
+const birthday=document.getElementById('birthday-980').value;
+if(!birthday){
+alert('⚠️ 生年月日を入力してください');
+return;
+}
+const date=new Date(birthday);
+const score=Object.values(ans980).reduce((a,b)=>a+b,0);
+const x=(date.getFullYear()%360);
+const y=(date.getMonth()*30+date.getDate())%180;
+const z=((date.getFullYear()+date.getMonth()+date.getDate()+score)%100);
+const code=`COORD-${x}-${y}-${z}`;
+let type='';
+if(score<7){type='過去重視型';}
+else if(score<14){type='バランス型';}
+else{type='現在集中型';}
+document.getElementById('analysis-980').innerHTML=`
+<strong>あなたの時空座標:</strong> (${x}, ${y}, ${z})<br>
+<strong>タイプ:</strong> ${type}<br><br>
+この座標は宇宙の中であなただけの位置です。<br>
+過去${Math.floor((new Date()-date)/(1000*60*60*24))}日間の全ての選択が、この座標を作り出しました。
+`;
+document.getElementById('code-980').textContent=`
+座標ドリル診断結果
+
+存在コード: ${code}
+座標: (${x}, ${y}, ${z})
+タイプ: ${type}
+スコア: ${score}/20
+
+この座標をAIに伝えることで、
+さらに詳細な時空分析が可能です。
+
+Beyond Time - Coordinate Drill
+`;
+document.getElementById('questions-980').style.display='none';
+document.getElementById('btn-980').style.display='none';
+document.getElementById('result-980').style.display='block';
+}
+
+// ¥2,980ドリル初期化
+function init2980(){
+const qs=[
+{q:'過去の記憶は？',opts:['宝物','参考資料','幻想']},
+{q:'未来への感情は？',opts:['期待','不安と期待','無関心']},
+{q:'今この瞬間への意識は？',opts:['常に今','時々意識','過去未来']},
+{q:'他人との比較は？',opts:['よくある','時々','ほとんどない']},
+{q:'時間とは？',opts:['限られた資源','流れるもの','幻想']},
+{q:'人生で大切なことは？',opts:['成長と達成','バランス','存在そのもの']},
+{q:'失敗の捉え方は？',opts:['避けるべき','学びの機会','同じこと']},
+{q:'直感と論理は？',opts:['論理重視','使い分ける','直感重視']},
+{q:'孤独をどう感じる？',opts:['寂しい','時には必要','本来の姿']},
+{q:'意味や目的は？',opts:['常に求める','ある程度','求めない']},
+{q:'変化への感情は？',opts:['不安','柔軟に対応','自然']},
+{q:'死について',opts:['恐怖','自然なこと','生と同じ']},
+{q:'あなたの存在は？',opts:['成し遂げて価値','存在自体も価値','存在で完璧']},
+{q:'最も美しい瞬間は？',opts:['目標達成','愛する人と','静寂の中']},
+{q:'あなたは何者？',opts:['肩書きが定義','複雑な存在','定義できない']}
+];
+const c=document.getElementById('questions-2980');
+c.innerHTML='';
+qs.forEach((q,i)=>{
+const d=document.createElement('div');
+d.classN
